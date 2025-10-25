@@ -1,0 +1,475 @@
+@font-face {
+    font-family: "cousine";
+    src: url("fonts/CousineNerdFontMono-Regular.ttf") format("truetype");
+}
+@font-face {
+    font-family: "condensed";
+    src: url("fonts/3270NerdFontMono-Condensed.ttf") format("truetype");
+}
+
+body {
+    margin: 0;
+    background: #000;
+    color: white;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    font-family: cousine, monospace;
+}
+
+.section {
+    width: 100%;
+    height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(6px);
+    transition:
+        background 0.6s ease,
+        opacity 0.8s;
+    opacity: 0;
+    transform: translateY(40px);
+}
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.section.dark {
+    background: rgba(10, 10, 10, 0.7);
+}
+
+.noise-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    z-index: 1;
+    pointer-events: none;
+}
+#bg-noise {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    mix-blend-mode: overlay;
+}
+
+#particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    z-index: 1;
+}
+
+.side-nav {
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-family: cousine, monospace;
+    z-index: 3;
+}
+.side-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.side-nav li {
+    margin: 20px 0;
+}
+.side-nav a {
+    color: #ccc;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+.side-nav a:hover {
+    color: #00ff99;
+}
+.connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 10px;
+}
+.connector .node {
+    width: 10px;
+    height: 10px;
+    background: #00ff99;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #00ff99;
+}
+.connector .line {
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(to bottom, #00ff99 0%, transparent 100%);
+    opacity: 0.4;
+}
+
+#hello {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.hw {
+    color: #00ff99;
+    font-weight: bold;
+}
+.cursor {
+    color: #00ff99;
+    margin-left: 4px;
+}
+.hidden {
+    opacity: 0;
+}
+
+.title {
+    font-family: condensed, monospace;
+    font-size: 2.2rem;
+    letter-spacing: 1.5px;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.text-body {
+    font-family: cousine, monospace;
+    color: #ccc;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0 10%;
+}
+
+.button-link {
+    font-family: condensed;
+    border: 1px dashed white;
+    padding: 12px 28px;
+    font-size: 1.5rem;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+}
+.button-link:hover {
+    background: #ffffff;
+    color: #000000;
+    transform: scale(1.05);
+}
+.button-link.small {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-color: #00ff99;
+}
+
+.footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    font-family: condensed;
+    position: relative;
+    z-index: 10;
+    backdrop-filter: none !important;
+}
+.footer a {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+.footer a:hover {
+    color: #00ff99;
+}
+
+.illustration-bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(1.1);
+    width: 100%;
+    height: 100%;
+    opacity: 0.25;
+    animation: drift 20s ease-in-out infinite alternate;
+    z-index: 0;
+}
+.illustration-bg svg {
+    width: 100%;
+    height: 100%;
+}
+.illustration-bg .link {
+    stroke: rgba(0, 255, 153, 0.3);
+    stroke-width: 2;
+    animation: glow 3s infinite ease-in-out alternate;
+}
+.illustration-bg .node {
+    fill: #00ff99;
+    filter: drop-shadow(0 0 8px #00ff99);
+    animation: pulse 2s infinite ease-in-out alternate;
+}
+
+@keyframes pulse {
+    from {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.4);
+    }
+}
+@keyframes glow {
+    from {
+        opacity: 0.2;
+    }
+    to {
+        opacity: 0.6;
+    }
+}
+@keyframes drift {
+    from {
+        transform: translateX(-50%) scale(1.1) translateY(0px);
+    }
+    to {
+        transform: translateX(-50%) scale(1.1) translateY(-20px);
+    }
+}
+
+/* ============================================
+   RESPONSIVE - TABLETS Y MÓVILES
+   ============================================ */
+
+/* Tablets (menor a 1024px) */
+@media (max-width: 1024px) {
+    .side-nav {
+        left: 3%;
+        gap: 15px;
+    }
+
+    .side-nav a {
+        font-size: 0.8rem;
+    }
+
+    #hello {
+        font-size: 2rem;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .text-body {
+        font-size: 1rem;
+        padding: 0 8%;
+    }
+}
+
+/* Móviles grandes y tablets pequeñas (menor a 768px) */
+@media (max-width: 768px) {
+    body {
+        scroll-snap-type: y proximity;
+    }
+
+    .section {
+        padding: 60px 20px 40px;
+        justify-content: flex-start;
+        padding-top: 80px;
+    }
+
+    /* Ocultar navegación lateral en móviles */
+    .side-nav {
+        display: none;
+    }
+
+    /* Agregar navegación superior móvil si es necesario */
+    .main-content {
+        padding: 0 20px;
+    }
+
+    #hello {
+        font-size: 1.8rem;
+        line-height: 1.3;
+        letter-spacing: 1px;
+    }
+
+    .title {
+        font-size: 1.6rem;
+        letter-spacing: 1px;
+        margin-bottom: 1.5rem;
+    }
+
+    .text-body {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        padding: 0 5%;
+        max-width: 100%;
+    }
+
+    .button-link {
+        font-size: 1.2rem;
+        padding: 10px 24px;
+        margin-top: 25px;
+    }
+
+    .button-link.small {
+        font-size: 0.9rem;
+        padding: 8px 18px;
+    }
+
+    .footer {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem 0;
+        align-items: center;
+    }
+
+    .footer a {
+        font-size: 0.85rem;
+    }
+
+    .illustration-bg {
+        transform: translateX(-50%) scale(1.3);
+        opacity: 0.15;
+    }
+
+    /* Optimizar animaciones en móvil */
+    .illustration-bg {
+        animation: drift 30s ease-in-out infinite alternate;
+    }
+}
+
+/* Móviles pequeños (menor a 480px) */
+@media (max-width: 480px) {
+    .section {
+        padding-top: 60px;
+        min-height: 100vh;
+    }
+
+    #hello {
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+    }
+
+    .hw {
+        display: inline-block;
+    }
+
+    .title {
+        font-size: 1.3rem;
+        padding: 0 10px;
+    }
+
+    .text-body {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        padding: 0 15px;
+    }
+
+    .button-link {
+        font-size: 1rem;
+        padding: 8px 20px;
+        margin-top: 20px;
+    }
+
+    .button-link.small {
+        font-size: 0.85rem;
+        padding: 7px 16px;
+    }
+
+    .footer {
+        gap: 0.8rem;
+        padding: 1.2rem 0;
+    }
+
+    .footer a {
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+    }
+
+    .connector .node {
+        width: 8px;
+        height: 8px;
+    }
+
+    .connector .line {
+        height: 30px;
+    }
+
+    /* Reducir blur para mejor rendimiento en móviles */
+    .section {
+        backdrop-filter: blur(3px);
+    }
+
+    .noise-layer {
+        backdrop-filter: blur(5px);
+    }
+
+    /* Ajustar canvas de partículas */
+    #particles {
+        opacity: 0.25;
+    }
+
+    #bg-noise {
+        opacity: 0.5;
+    }
+}
+
+/* Móviles muy pequeños (menor a 360px) */
+@media (max-width: 360px) {
+    #hello {
+        font-size: 1.3rem;
+    }
+
+    .title {
+        font-size: 1.1rem;
+    }
+
+    .text-body {
+        font-size: 0.85rem;
+    }
+
+    .button-link {
+        font-size: 0.9rem;
+        padding: 7px 16px;
+    }
+}
+
+/* Landscape en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+    .section {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    #hello {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .title {
+        font-size: 1.4rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .text-body {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .button-link {
+        margin-top: 15px;
+    }
+}
