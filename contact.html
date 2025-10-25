@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles/styles.css" />
+        <title>Contacto | H3ll0 W0rld</title>
+    </head>
+    <body>
+        <div class="noise-layer"></div>
+        <canvas id="bg-noise"></canvas>
+
+        <div id="contact-main" class="section">
+            <nav class="side-nav">
+                <ul>
+                    <li><a href="index.html#conocenos">> Conócenos</a></li>
+                    <li>
+                        <a href="index.html#elegirnos">> ¿Por qué elegirnos?</a>
+                    </li>
+                    <li><a href="index.html#cursos">> Cursos</a></li>
+                    <li><a href="#">> Contacto</a></li>
+                </ul>
+                <div class="connector">
+                    <span class="node"></span>
+                    <span class="line"></span>
+                    <span class="node"></span>
+                    <span class="line"></span>
+                    <span class="node"></span>
+                    <span class="line"></span>
+                    <span class="node"></span>
+                </div>
+            </nav>
+
+            <div class="main-content">
+                <h1 id="hello">
+                    <span class="hw">Contáctanos</span
+                    ><span class="cursor">|</span>
+                </h1>
+                <p class="text-body">
+                    No te quedes con la duda. Pregúntanos lo que necesites sobre
+                    cursos, metodología, horarios o cualquier cosa. Estamos aquí
+                    para ayudarte a dar el siguiente paso.
+                </p>
+
+                <div class="contact-links" style="margin-top: 2rem">
+                    <a href="#" class="button-link small">WhatsApp</a>
+                    <a href="#" class="button-link small">Facebook</a>
+                    <a href="#" class="button-link small">Instagram</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="faq" class="section">
+            <h3 class="title">FAQ</h3>
+            <p class="text-body">
+                Sabemos que elegir un curso genera dudas. Aquí respondemos las
+                más frecuentes, pero si necesitas algo más específico,
+                escríbenos.
+            </p>
+
+            <div class="faq-list" style="margin-top: 2rem; max-width: 700px">
+                <div class="faq-item" style="margin-bottom: 1.5rem">
+                    <h4 class="hw">¿Cómo me inscribo?</h4>
+                    <p style="color: #ccc">
+                        Puedes inscribirte desde la página de cursos o
+                        escribirnos directamente por WhatsApp para recibir
+                        asistencia.
+                    </p>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 1.5rem">
+                    <h4 class="hw">¿Necesito experiencia previa?</h4>
+                    <p style="color: #ccc">
+                        No. Nuestros cursos están pensados desde cero, guiándote
+                        paso a paso en cada proyecto.
+                    </p>
+                </div>
+
+                <div class="faq-item" style="margin-bottom: 1.5rem">
+                    <h4 class="hw">¿Qué necesito para comenzar?</h4>
+                    <p style="color: #ccc">
+                        Solo tu computadora, conexión a internet y ganas de
+                        aprender.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <a href="index.html#main" class="link">Inicio</a>
+            <a href="index.html#conocenos" class="link">Sobre nosotros</a>
+            <a href="index.html#cursos" class="link">Nuestros cursos</a>
+            <a href="index.html#elegirnos" class="link">Por qué elegirnos</a>
+            <a href="#" class="link">Contáctanos</a>
+        </footer>
+
+        <script>
+            const cursor = document.querySelector(".cursor");
+            setInterval(() => cursor.classList.toggle("hidden"), 500);
+
+            document.addEventListener("scroll", () => {
+                document.querySelectorAll(".section").forEach((sec) => {
+                    const rect = sec.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 100)
+                        sec.classList.add("visible");
+                });
+            });
+
+            const noiseCanvas = document.getElementById("bg-noise");
+            const nctx = noiseCanvas.getContext("2d");
+            let w, h;
+
+            function resizeNoise() {
+                w = noiseCanvas.width = window.innerWidth;
+                h = noiseCanvas.height = window.innerHeight;
+            }
+            window.addEventListener("resize", resizeNoise);
+            resizeNoise();
+
+            function generateNoise() {
+                const imageData = nctx.createImageData(w, h);
+                for (let i = 0; i < imageData.data.length; i += 4) {
+                    const val = Math.random() * 255;
+                    imageData.data[i] = val;
+                    imageData.data[i + 1] = val;
+                    imageData.data[i + 2] = val;
+                    imageData.data[i + 3] = 12;
+                }
+                nctx.putImageData(imageData, 0, 0);
+                requestAnimationFrame(generateNoise);
+            }
+            generateNoise();
+        </script>
+    </body>
+</html>
